@@ -27,7 +27,8 @@ jobs:
       - name: Run a multi-line script
         run: |
           pwd
-          ls -lla          
+          ls -lla      
+          ls -lla ../
           echo Add other actions to build,
           echo test, and deploy your project.
           # cat README.md >> $GITHUB_STEP_SUMMARY
