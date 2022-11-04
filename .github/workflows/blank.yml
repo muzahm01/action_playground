@@ -33,4 +33,4 @@ jobs:
           ls -lla ../
           echo Add other actions to build,
           echo test, and deploy your project.
-          # cat README.md >> $GITHUB_STEP_SUMMARY
+          cat README.md >> $GITHUB_STEP_SUMMARY
