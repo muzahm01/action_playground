@@ -1,3 +1,3 @@
 # action_playground
 
-The 2nd commit to README after release v1
+The 1st commit to README after release v2
