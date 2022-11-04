@@ -11,4 +11,4 @@ jobs:
   
   # This workflow contains a single job called "build"
   build:    
-    uses: "muzahm01/action_playground/.github/workflows/blank.yml@v2
+    uses: muzahm01/action_playground/.github/workflows/blank.yml@v2
