@@ -1,34 +1,42 @@
-name: Summary Color Example
+# .github/workflows/colored-summary.yml
+name: Create a Colored Summary
 
+# This workflow can be triggered manually from the Actions tab
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-report:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Add colored summary
+      - name: Generate colorful summary
         run: |
-          # --- ANSI escape codes for colors ---
-          # 31m = red
-          # 32m = green
-          # 33m = yellow
-          # 0m = reset
-          # Use printf for better control over special characters like \033
-          printf "## Build Report\n\n" >> "$GITHUB_STEP_SUMMARY"
+          # The $GITHUB_STEP_SUMMARY environment variable points to a file that
+          # GitHub Actions will render as Markdown in the job summary.
+          # We can write HTML directly to this file.
+
+          # --- Example 1: Using a Markdown Table (Recommended) ---
+          # This is often the cleanest way to display status blocks.
+          echo "### 📊 Build and Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | Component | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|:---:|:---|:---|" >> $GITHUB_STEP_SUMMARY
+          # Success (Green)
+          echo "| <span style=\"background-color:#d4edda; color:#155724; padding:3px 8px; border-radius:5px\">✅ SUCCESS</span> | API Build | Completed in 45s. |" >> $GITHUB_STEP_SUMMARY
+          # Warning (Yellow)
+          echo "| <span style=\"background-color:#fff3cd; color:#856404; padding:3px 8px; border-radius:5px\">⚠️ WARNING</span> | Linter | 12 non-critical issues found. |" >> $GITHUB_STEP_SUMMARY
+          # Failed (Red)
+          echo "| <span style=\"background-color:#f8d7da; color:#721c24; padding:3px 8px; border-radius:5px\">❌ FAILED</span> | Unit Tests | 3 of 128 tests failed. |" >> $GITHUB_STEP_SUMMARY
+          # Neutral/Info (Blue)
+          echo "| <span style=\"background-color:#d1ecf1; color:#0c5460; padding:3px 8px; border-radius:5px\">ℹ️ SKIPPED</span> | E2E Tests | Not run on PRs from forks. |" >> $GITHUB_STEP_SUMMARY
           
-          printf "### Status Indicators\n\n" >> "$GITHUB_STEP_SUMMARY"
-          printf "This is a brief summary of the workflow run.\n\n" >> "$GITHUB_STEP_SUMMARY"
-          
-          # --- Colored text for status indicators using ANSI codes ---
-          printf "- **Status:** \033[32mSuccess\033[0m ✅\n" >> "$GITHUB_STEP_SUMMARY"
-          printf "- **Warning:** \033[33mCheck logs for details\033[0m ⚠️\n" >> "$GITHUB_STEP_SUMMARY"
-          printf "- **Error:** \033[31mBuild failed\033[0m ❌\n" >> "$GITHUB_STEP_SUMMARY"
-          
-          printf "### Other Details\n\n" >> "$GITHUB_STEP_SUMMARY"
-          printf "The build number is `12345`.\n\n" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> $GITHUB_STEP_SUMMARY # Add a blank line for spacing
+          echo '---' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # --- Example 2: Using a Div for a block message ---
+          # This is great for a callout or a summary message.
+          echo '### 📝 Overall Summary' >> $GITHUB_STEP_SUMMARY
+          echo '<div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-left: 6px solid #f5c6cb; border-radius: 5px;">' >> $GITHUB_STEP_SUMMARY
+          echo "<strong>Action Required:</strong> The workflow failed due to failing unit tests. Please review the logs and address the issues." >> $GITHUB_STEP_SUMMARY
+          echo '</div>' >> $GITHUB_STEP_SUMMARY
+
