@@ -1,40 +1,48 @@
-# .github/workflows/colored-summary.yml
-name: Create a Colored Summary
+# .github/workflows/summary-example.yml
+name: Job Summary Demo
 
-# This workflow can be triggered manually from the Actions tab
+# This workflow runs on manual trigger (workflow_dispatch)
 on:
   workflow_dispatch:
 
 jobs:
-  build-and-report:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate colorful summary
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add a header to the summary
+        run: echo '## Build and Test Report' >> $GITHUB_STEP_SUMMARY
+
+      - name: Add a blockquote for important notes
         run: |
-          # The $GITHUB_STEP_SUMMARY environment variable points to a file that
-          # GitHub Actions will render as Markdown in the job summary.
-          # GitHub sanitizes HTML and strips CSS like `background-color`.
-          # The most reliable way to show color is to use image badges.
+          echo '> **Note:** This is a summary of the automated build process.' >> $GITHUB_STEP_SUMMARY
+          echo '' >> $GITHUB_STEP_SUMMARY # Add a blank line for spacing
 
-          # --- Example 1: Using a Markdown Table with Image Badges (Recommended) ---
-          echo "### 📊 Build and Test Report" >> $GITHUB_STEP_SUMMARY
-          echo "| Status | Component | Details |" >> $GITHUB_STEP_SUMMARY
-          echo "|:---|:---|:---|" >> $GITHUB_STEP_SUMMARY
-          # Success (Green)
-          echo "| ![SUCCESS](https://img.shields.io/badge/SUCCESS-green?style=for-the-badge) | API Build | Completed in 45s. |" >> $GITHUB_STEP_SUMMARY
-          # Warning (Yellow)
-          echo "| ![WARNING](https://img.shields.io/badge/WARNING-yellow?style=for-the-badge) | Linter | 12 non-critical issues found. |" >> $GITHUB_STEP_SUMMARY
-          # Failed (Red)
-          echo "| ![FAILED](https://img.shields.io/badge/FAILED-red?style=for-the-badge) | Unit Tests | 3 of 128 tests failed. |" >> $GITHUB_STEP_SUMMARY
-          # Neutral/Info (Blue)
-          echo "| ![SKIPPED](https://img.shields.io/badge/SKIPPED-blue?style=for-the-badge) | E2E Tests | Not run on PRs from forks. |" >> $GITHUB_STEP_SUMMARY
-          
-          echo "" >> $GITHUB_STEP_SUMMARY # Add a blank line for spacing
-          echo '---' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+      - name: Add test results using a table
+        run: |
+          echo '| Test Suite      | Result | Duration |' >> $GITHUB_STEP_SUMMARY
+          echo '|-----------------|--------|----------|' >> $GITHUB_STEP_SUMMARY
+          echo '| Unit Tests      | ✅ Pass | 1m 25s   |' >> $GITHUB_STEP_SUMMARY
+          echo '| Integration Tests | ✅ Pass | 3m 10s   |' >> $GITHUB_STEP_SUMMARY
+          echo '| Linter Checks   | ⚠️ Warn | 0m 45s   |' >> $GITHUB_STEP_SUMMARY
 
-          # --- Example 2: Using a Blockquote for a callout message ---
-          # This is more robust than a styled <div> and renders nicely.
-          echo '### 📝 Overall Summary' >> $GITHUB_STEP_SUMMARY
-          echo '> 🚨 **Action Required:** The workflow failed due to failing unit tests. Please review the logs and address the issues.' >> $GITHUB_STEP_SUMMARY
+      - name: Add code coverage output in a code block
+        run: |
+          echo '' >> $GITHUB_STEP_SUMMARY # Add a blank line for spacing
+          echo '### Code Coverage' >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          echo '{' >> $GITHUB_STEP_SUMMARY
+          echo '  "total_coverage": "92.7%",' >> $GITHUB_STEP_SUMMARY
+          echo '  "files_changed": 5,' >> $GITHUB_STEP_SUMMARY
+          echo '  "new_issues": 2' >> $GITHUB_STEP_SUMMARY
+          echo '}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Add a final status message
+        run: |
+          echo '' >> $GITHUB_STEP_SUMMARY
+          echo '### Final Status: Success with Warnings' >> $GITHUB_STEP_SUMMARY
+          echo 'The workflow completed successfully, but please review the linter warnings.' >> $GITHUB_STEP_SUMMARY
 
