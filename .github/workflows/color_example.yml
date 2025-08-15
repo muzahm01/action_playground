@@ -13,30 +13,28 @@ jobs:
         run: |
           # The $GITHUB_STEP_SUMMARY environment variable points to a file that
           # GitHub Actions will render as Markdown in the job summary.
-          # We can write HTML directly to this file.
+          # GitHub sanitizes HTML and strips CSS like `background-color`.
+          # The most reliable way to show color is to use image badges.
 
-          # --- Example 1: Using a Markdown Table (Recommended) ---
-          # This is often the cleanest way to display status blocks.
+          # --- Example 1: Using a Markdown Table with Image Badges (Recommended) ---
           echo "### 📊 Build and Test Report" >> $GITHUB_STEP_SUMMARY
           echo "| Status | Component | Details |" >> $GITHUB_STEP_SUMMARY
-          echo "|:---:|:---|:---|" >> $GITHUB_STEP_SUMMARY
+          echo "|:---|:---|:---|" >> $GITHUB_STEP_SUMMARY
           # Success (Green)
-          echo "| <span style=\"background-color:#d4edda; color:#155724; padding:3px 8px; border-radius:5px\">✅ SUCCESS</span> | API Build | Completed in 45s. |" >> $GITHUB_STEP_SUMMARY
+          echo "| ![SUCCESS](https://img.shields.io/badge/SUCCESS-green?style=for-the-badge) | API Build | Completed in 45s. |" >> $GITHUB_STEP_SUMMARY
           # Warning (Yellow)
-          echo "| <span style=\"background-color:#fff3cd; color:#856404; padding:3px 8px; border-radius:5px\">⚠️ WARNING</span> | Linter | 12 non-critical issues found. |" >> $GITHUB_STEP_SUMMARY
+          echo "| ![WARNING](https://img.shields.io/badge/WARNING-yellow?style=for-the-badge) | Linter | 12 non-critical issues found. |" >> $GITHUB_STEP_SUMMARY
           # Failed (Red)
-          echo "| <span style=\"background-color:#f8d7da; color:#721c24; padding:3px 8px; border-radius:5px\">❌ FAILED</span> | Unit Tests | 3 of 128 tests failed. |" >> $GITHUB_STEP_SUMMARY
+          echo "| ![FAILED](https://img.shields.io/badge/FAILED-red?style=for-the-badge) | Unit Tests | 3 of 128 tests failed. |" >> $GITHUB_STEP_SUMMARY
           # Neutral/Info (Blue)
-          echo "| <span style=\"background-color:#d1ecf1; color:#0c5460; padding:3px 8px; border-radius:5px\">ℹ️ SKIPPED</span> | E2E Tests | Not run on PRs from forks. |" >> $GITHUB_STEP_SUMMARY
+          echo "| ![SKIPPED](https://img.shields.io/badge/SKIPPED-blue?style=for-the-badge) | E2E Tests | Not run on PRs from forks. |" >> $GITHUB_STEP_SUMMARY
           
           echo "" >> $GITHUB_STEP_SUMMARY # Add a blank line for spacing
           echo '---' >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          # --- Example 2: Using a Div for a block message ---
-          # This is great for a callout or a summary message.
+          # --- Example 2: Using a Blockquote for a callout message ---
+          # This is more robust than a styled <div> and renders nicely.
           echo '### 📝 Overall Summary' >> $GITHUB_STEP_SUMMARY
-          echo '<div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-left: 6px solid #f5c6cb; border-radius: 5px;">' >> $GITHUB_STEP_SUMMARY
-          echo "<strong>Action Required:</strong> The workflow failed due to failing unit tests. Please review the logs and address the issues." >> $GITHUB_STEP_SUMMARY
-          echo '</div>' >> $GITHUB_STEP_SUMMARY
+          echo '> 🚨 **Action Required:** The workflow failed due to failing unit tests. Please review the logs and address the issues.' >> $GITHUB_STEP_SUMMARY
 
