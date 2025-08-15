@@ -1,0 +1,42 @@
+name: Summary Color Example
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Add colored summary
+        run: |
+          # The GitHub Actions Summary is available via the GITHUB_STEP_SUMMARY environment variable.
+          # We can append content to it using '>>'.
+          
+          # --- Markdown and HTML combined ---
+          echo "# Build Report 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "This is a brief summary of the workflow run." >> $GITHUB_STEP_SUMMARY
+          
+          # --- Colored text for status indicators ---
+          echo "## Status Indicators" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** <span style=\"color:green;\">Success</span> ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- **Warning:** <span style=\"color:orange;\">Check logs for details</span> ⚠️" >> $GITHUB_STEP_SUMMARY
+          echo "- **Error:** <span style=\"color:red;\">Build failed</span> ❌" >> $GITHUB_STEP_SUMMARY
+          
+          # --- Code block example ---
+          echo "## Other Details" >> $GITHUB_STEP_SUMMARY
+          echo "The build number is `12345`." >> $GITHUB_STEP_SUMMARY
+          
+          # --- Table example (HTML) ---
+          echo "## Build Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "<table>" >> $GITHUB_STEP_SUMMARY
+          echo "<thead><tr><th>Metric</th><th>Value</th></tr></thead>" >> $GITHUB_STEP_SUMMARY
+          echo "<tbody>" >> $GITHUB_STEP_SUMMARY
+          echo "<tr><td>Duration</td><td>5 min</td></tr>" >> $GITHUB_STEP_SUMMARY
+          echo "<tr><td>Files Changed</td><td>3</td></tr>" >> $GITHUB_STEP_SUMMARY
+          echo "</tbody>" >> $GITHUB_STEP_SUMMARY
+          echo "</table>" >> $GITHUB_STEP_SUMMARY
