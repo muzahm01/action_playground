@@ -19,17 +19,16 @@ jobs:
           # 32m = green
           # 33m = yellow
           # 0m = reset
-          
           # Use printf for better control over special characters like \033
-          printf "## Build Report\n\n" >> $GITHUB_STEP_SUMMARY
+          printf "## Build Report\n\n" >> "$GITHUB_STEP_SUMMARY"
           
-          printf "### Status Indicators\n\n" >> $GITHUB_STEP_SUMMARY
-          printf "This is a brief summary of the workflow run.\n\n" >> $GITHUB_STEP_SUMMARY
+          printf "### Status Indicators\n\n" >> "$GITHUB_STEP_SUMMARY"
+          printf "This is a brief summary of the workflow run.\n\n" >> "$GITHUB_STEP_SUMMARY"
           
           # --- Colored text for status indicators using ANSI codes ---
-          printf "- **Status:** \033[32mSuccess\033[0m ✅\n" >> $GITHUB_STEP_SUMMARY
-          printf "- **Warning:** \033[33mCheck logs for details\033[0m ⚠️\n" >> $GITHUB_STEP_SUMMARY
-          printf "- **Error:** \033[31mBuild failed\033[0m ❌\n" >> $GITHUB_STEP_SUMMARY
+          printf "- **Status:** \033[32mSuccess\033[0m ✅\n" >> "$GITHUB_STEP_SUMMARY"
+          printf "- **Warning:** \033[33mCheck logs for details\033[0m ⚠️\n" >> "$GITHUB_STEP_SUMMARY"
+          printf "- **Error:** \033[31mBuild failed\033[0m ❌\n" >> "$GITHUB_STEP_SUMMARY"
           
-          printf "### Other Details\n\n" >> $GITHUB_STEP_SUMMARY
-          printf "The build number is `12345`.\n\n" >> $GITHUB_STEP_SUMMARY
+          printf "### Other Details\n\n" >> "$GITHUB_STEP_SUMMARY"
+          printf "The build number is `12345`.\n\n" >> "$GITHUB_STEP_SUMMARY"
